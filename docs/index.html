@@ -3,13 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tipster Johnathan Esguerra Dashboard</title>
-
+<title>Tipster Dashboard: Colombia vs Francia</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:'Inter',sans-serif;background:radial-gradient(circle at top,#1e293b,#020617);color:#e2e8f0}
+body{margin:0;font-family:'Inter',sans-serif;background:radial-gradient(circle at top,#1e293b,#020617);color:#e2e8f0;}
 .container{max-width:1200px;margin:auto;padding:30px}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
 .teams{display:flex;align-items:center;gap:15px}
@@ -38,163 +36,107 @@ input{width:70px;padding:6px;border-radius:8px;border:none;background:#020617;co
 .value{background:#facc15;color:#020617}
 </style>
 </head>
-
 <body>
 <div class="container">
-
-<!-- ======================
-     🧠 TEMPLATE CONFIG
-     Editar estos valores para cada partido
-====================== -->
-
-<script>
-const DATA = {
-  team1: "México",
-  team2: "Portugal",
-  flag1: "https://flagcdn.com/w40/mx.png",
-  flag2: "https://flagcdn.com/w40/pt.png",
-
-  sot1: "3 – 4.5",
-  sot2: "4.8 – 6.5",
-  sotTotal: "8 – 10",
-  shotsTotal: "24 – 32",
-
-  markets: [
-    {name:"Over 8.5 SoT", prob:0.64, odd:1.84},
-    {name:"Over 9.5 SoT", prob:0.48, odd:2.40}
-  ],
-
-  portugal: [
-    {name:"Over 5.5 SoT", prob:0.52, odd:2.10}
-  ],
-
-  shots: [
-    {name:"Over 24.5 tiros", prob:0.68, odd:1.71}
-  ],
-
-  picks: [
-    {name:"Over 8.5 SoT", tag:"TOP"},
-    {name:"Over 24.5 tiros", tag:"TOP"},
-    {name:"Portugal +5.5 SoT", tag:"VALUE"}
-  ]
-}
-</script>
-
 <div class="header">
   <div class="teams">
     <div class="team">
-      <img id="flag1"><span id="team1"></span>
+      <img src="https://flagcdn.com/w40/co.png">
+      Colombia
     </div>
     <div class="vs">VS</div>
     <div class="team">
-      <img id="flag2"><span id="team2"></span>
+      <img src="https://flagcdn.com/w40/fr.png">
+      Francia
     </div>
   </div>
-  <strong>Modelo Data analitics by Johnathan Esguerra</strong>
+  <div>
+    <strong>Modelo V6.8</strong>
+  </div>
 </div>
-
 <div class="grid">
-
 <div class="card">
 <h3>📈 Proyección del Modelo</h3>
 <div class="projection-grid">
-  <div class="stat-box"><div class="stat-title">Local SoT</div><div class="stat-value" id="sot1"></div></div>
-  <div class="stat-box"><div class="stat-title">Visitante SoT</div><div class="stat-value highlight" id="sot2"></div></div>
-  <div class="stat-box"><div class="stat-title">Total SoT</div><div class="stat-value" id="sotTotal"></div></div>
-  <div class="stat-box"><div class="stat-title">Total tiros</div><div class="stat-value" id="shotsTotal"></div></div>
+  <div class="stat-box">
+    <div class="stat-title">Colombia SoT</div>
+    <div class="stat-value">4 – 5</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-title">Francia SoT</div>
+    <div class="stat-value highlight">4 – 5</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-title">Total SoT</div>
+    <div class="stat-value">8 – 10</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-title">Total tiros</div>
+    <div class="stat-value">22 – 28</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-title">BTTS</div>
+    <div class="stat-value highlight">59%</div>
+  </div>
 </div>
 </div>
-
 <div class="card">
-<h3>🎯 Mercados SoT</h3>
-<table class="table" id="markets"></table>
+<h3>🎯 Total SoT & Tiros</h3>
+<table class="table">
+<tr><th>Mercado</th><th>Prob Model</th><th>Cuota</th><th>EV</th></tr>
+<tr>
+<td>Over 8.5 SoT</td>
+<td>62%</td>
+<td><input value="1.80" onchange="calcEV(this,0.62)"></td>
+<td class="positive">+11%</td>
+</tr>
+<tr>
+<td>Over 24.5 tiros</td>
+<td>58%</td>
+<td><input value="1.95" onchange="calcEV(this,0.58)"></td>
+<td class="positive">+13%</td>
+</tr>
+<tr>
+<td>BTTS (Ambos marcan)</td>
+<td>59%</td>
+<td><input value="1.80" onchange="calcEV(this,0.59)"></td>
+<td class="neutral">+6%</td>
+</tr>
+<tr>
+<td>Over 2.5 goles</td>
+<td>55%</td>
+<td><input value="1.90" onchange="calcEV(this,0.55)"></td>
+<td class="neutral">+4%</td>
+</tr>
+</table>
 </div>
-
 <div class="card">
-<h3>📊 Equipo Visitante</h3>
-<table class="table" id="portugal"></table>
+<h3>🏆 Picks Generales</h3>
+<ul class="picks">
+<li>Over 8.5 Tiros a puerta <span class="badge top">TOP</span></li>
+<li>Over 24.5 Tiros Totales <span class="badge top">TOP</span></li>
+<li>BTTS (Ambos marcan) <span class="badge value">VALUE</span></li>
+<li>Over 2.5 Goles <span class="badge value">VALUE</span></li>
+</ul>
 </div>
-
 <div class="card">
-<h3>🔢 Total Tiros</h3>
-<table class="table" id="shots"></table>
-</div>
-
-<div class="card">
-<h3>🏆 Picks</h3>
-<ul class="picks" id="picks"></ul>
-</div>
-
+<h3>📊 Resultado Proyectado</h3>
+<div class="stat-box">
+<div class="stat-value highlight">Colombia 1 – 2 Francia</div>
 </div>
 </div>
-
+</div>
+</div>
 <script>
-function renderTable(id,data){
-let html="<tr><th>Mercado</th><th>Prob</th><th>Cuota</th><th>EV</th></tr>";
-data.forEach(d=>{
-let ev=(d.prob*d.odd-1)*100;
-html+=`<tr>
-<td>${d.name}</td>
-<td>${(d.prob*100).toFixed(0)}%</td>
-<td><input value="${d.odd}" onchange="calcEV(this,${d.prob})"></td>
-<td class="${ev>10?'positive':ev>0?'neutral':'negative'}">${ev.toFixed(1)}%</td>
-</tr>`;
-});
-document.getElementById(id).innerHTML=html;
-}
-
-function render(){
-document.getElementById('team1').innerText=DATA.team1;
-document.getElementById('team2').innerText=DATA.team2;
-document.getElementById('flag1').src=DATA.flag1;
-document.getElementById('flag2').src=DATA.flag2;
-
-document.getElementById('sot1').innerText=DATA.sot1;
-document.getElementById('sot2').innerText=DATA.sot2;
-document.getElementById('sotTotal').innerText=DATA.sotTotal;
-document.getElementById('shotsTotal').innerText=DATA.shotsTotal;
-
-renderTable('markets',DATA.markets);
-renderTable('portugal',DATA.portugal);
-renderTable('shots',DATA.shots);
-
-let picksHTML="";
-DATA.picks.forEach(p=>{
-picksHTML+=`<li>${p.name} <span class="badge ${p.tag==='TOP'?'top':'value'}">${p.tag}</span></li>`;
-});
-document.getElementById('picks').innerHTML=picksHTML;
-}
-
 function calcEV(input,prob){
 const cuota=parseFloat(input.value);
-if(!cuota)return;
+if(!cuota||cuota<=0)return;
 const ev=(prob*cuota)-1;
 const evPercent=(ev*100).toFixed(1);
 const cell=input.parentElement.nextElementSibling;
 cell.innerText=(evPercent>=0?'+':'')+evPercent+'%';
 cell.className=evPercent>10?'positive':evPercent>0?'neutral':'negative';
 }
-
-render();
 </script>
-
-<!-- ======================
-🔟 NUEVO PASO DEL MODELO
-📊 EXPORTACIÓN DASHBOARD
-
-Objetivo:
-Visualizar y reutilizar el análisis en formato profesional
-
-Uso:
-1. Completar DATA
-2. Exportar HTML
-3. Usar como dashboard o histórico
-
-Valor:
-✔ Estandarización
-✔ Visualización clara
-✔ Base para tracking futuro
-====================== -->
-
 </body>
 </html>
