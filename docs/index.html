@@ -9,124 +9,161 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:'Inter',sans-serif;background:radial-gradient(circle at top,#1e293b,#020617);color:#e2e8f0;}
 .container{max-width:1200px;margin:auto;padding:30px}
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+
+/* HEADER */
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .teams{display:flex;align-items:center;gap:15px}
 .team{display:flex;align-items:center;gap:10px;font-weight:600}
 .team img{width:40px;height:40px;border-radius:50%}
 .vs{font-size:1.5rem;color:#38bdf8}
+
+/* TABS */
+.tabs{display:flex;gap:10px;margin-bottom:20px}
+.tab{padding:10px 20px;border-radius:10px;background:#0f172a;cursor:pointer;transition:.3s}
+.tab:hover{background:#1e293b}
+.tab.active{background:#38bdf8;color:#020617;font-weight:700}
+.section{display:none}
+.section.active{display:block}
+
+/* GRID */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+
+/* CARDS */
 .card{background:linear-gradient(145deg,#1e293b,#0f172a);border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,0.6);transition:.3s}
 .card:hover{transform:translateY(-5px)}
 .card h3{margin-top:0;color:#38bdf8}
+
+/* STATS */
 .projection-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:15px}
 .stat-box{background:#020617;padding:15px;border-radius:12px;text-align:center}
 .stat-title{font-size:0.8rem;color:#94a3b8}
 .stat-value{font-size:1.3rem;font-weight:700}
 .highlight{color:#22c55e}
+
+/* TABLE */
 .table{width:100%;margin-top:10px;border-collapse:collapse}
 .table th{color:#94a3b8;padding:10px}
 .table td{padding:10px;border-top:1px solid #334155;text-align:center}
 input{width:70px;padding:6px;border-radius:8px;border:none;background:#020617;color:white;text-align:center}
+
+/* COLORS */
 .positive{color:#22c55e;font-weight:bold}
 .neutral{color:#facc15}
 .negative{color:#ef4444}
+
+/* PICKS */
 .picks li{margin-bottom:8px}
 .badge{display:inline-block;padding:4px 8px;border-radius:8px;font-size:0.8rem;margin-left:5px}
 .top{background:#22c55e;color:#020617}
 .value{background:#facc15;color:#020617}
+
+/* RESULTS UX */
+.progress{background:#020617;border-radius:10px;height:12px;overflow:hidden;margin-top:10px}
+.progress-bar{height:100%;background:#22c55e;width:100%}
+select{padding:6px;border-radius:6px;background:#020617;color:white;border:none;margin-bottom:10px}
+
 </style>
 </head>
 <body>
 <div class="container">
+
 <div class="header">
   <div class="teams">
-    <div class="team">
-      <img src="https://flagcdn.com/w40/co.png">
-      Colombia
-    </div>
+    <div class="team"><img src="https://flagcdn.com/w40/co.png">Colombia</div>
     <div class="vs">VS</div>
-    <div class="team">
-      <img src="https://flagcdn.com/w40/fr.png">
-      Francia
-    </div>
+    <div class="team"><img src="https://flagcdn.com/w40/fr.png">Francia</div>
   </div>
-  <div>
-    <strong>Modelo V6.8</strong>
-  </div>
+  <div><strong>Modelo V6.8</strong></div>
 </div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('pred',this)">📊 Predicción</div>
+  <div class="tab" onclick="showTab('results',this)">🏁 Resultados</div>
+</div>
+
+<!-- PREDICCION -->
+<div id="pred" class="section active">
 <div class="grid">
+
 <div class="card">
 <h3>📈 Proyección del Modelo</h3>
 <div class="projection-grid">
-  <div class="stat-box">
-    <div class="stat-title">Colombia SoT</div>
-    <div class="stat-value">4 – 5</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-title">Francia SoT</div>
-    <div class="stat-value highlight">4 – 5</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-title">Total SoT</div>
-    <div class="stat-value">8 – 10</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-title">Total tiros</div>
-    <div class="stat-value">22 – 28</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-title">BTTS</div>
-    <div class="stat-value highlight">59%</div>
-  </div>
+<div class="stat-box"><div class="stat-title">Colombia SoT</div><div class="stat-value">4 – 5</div></div>
+<div class="stat-box"><div class="stat-title">Francia SoT</div><div class="stat-value highlight">4 – 5</div></div>
+<div class="stat-box"><div class="stat-title">Total SoT</div><div class="stat-value">8 – 10</div></div>
+<div class="stat-box"><div class="stat-title">Total tiros</div><div class="stat-value">22 – 28</div></div>
+<div class="stat-box"><div class="stat-title">BTTS</div><div class="stat-value highlight">59%</div></div>
 </div>
 </div>
+
 <div class="card">
 <h3>🎯 Total SoT & Tiros</h3>
 <table class="table">
-<tr><th>Mercado</th><th>Prob Model</th><th>Cuota</th><th>EV</th></tr>
-<tr>
-<td>Over 8.5 SoT</td>
-<td>62%</td>
-<td><input value="1.80" onchange="calcEV(this,0.62)"></td>
-<td class="positive">+11%</td>
-</tr>
-<tr>
-<td>Over 24.5 tiros</td>
-<td>58%</td>
-<td><input value="1.95" onchange="calcEV(this,0.58)"></td>
-<td class="positive">+13%</td>
-</tr>
-<tr>
-<td>BTTS (Ambos marcan)</td>
-<td>59%</td>
-<td><input value="1.80" onchange="calcEV(this,0.59)"></td>
-<td class="neutral">+6%</td>
-</tr>
-<tr>
-<td>Over 2.5 goles</td>
-<td>55%</td>
-<td><input value="1.90" onchange="calcEV(this,0.55)"></td>
-<td class="neutral">+4%</td>
-</tr>
+<tr><th>Mercado</th><th>Prob</th><th>Cuota</th><th>EV</th></tr>
+<tr><td>Over 8.5 SoT</td><td>62%</td><td><input value="1.80" onchange="calcEV(this,0.62)"></td><td class="positive">+11%</td></tr>
+<tr><td>Over 24.5 tiros</td><td>58%</td><td><input value="1.95" onchange="calcEV(this,0.58)"></td><td class="positive">+13%</td></tr>
+<tr><td>BTTS</td><td>59%</td><td><input value="1.80" onchange="calcEV(this,0.59)"></td><td class="neutral">+6%</td></tr>
+<tr><td>Over 2.5 goles</td><td>55%</td><td><input value="1.90" onchange="calcEV(this,0.55)"></td><td class="neutral">+4%</td></tr>
 </table>
 </div>
+
 <div class="card">
-<h3>🏆 Picks Generales</h3>
+<h3>🏆 Picks</h3>
 <ul class="picks">
-<li>Over 8.5 Tiros a puerta <span class="badge top">TOP</span></li>
-<li>Over 24.5 Tiros Totales <span class="badge top">TOP</span></li>
-<li>BTTS (Ambos marcan) <span class="badge value">VALUE</span></li>
-<li>Over 2.5 Goles <span class="badge value">VALUE</span></li>
+<li>Over 8.5 SoT <span class="badge top">TOP</span></li>
+<li>Over 24.5 tiros <span class="badge top">TOP</span></li>
+<li>BTTS <span class="badge value">VALUE</span></li>
+<li>Over 2.5 goles <span class="badge value">VALUE</span></li>
 </ul>
 </div>
+
 <div class="card">
 <h3>📊 Resultado Proyectado</h3>
-<div class="stat-box">
-<div class="stat-value highlight">Colombia 1 – 2 Francia</div>
+<div class="stat-box"><div class="stat-value highlight">Colombia 1 – 2 Francia</div></div>
+</div>
+
 </div>
 </div>
+
+<!-- RESULTADOS -->
+<div id="results" class="section">
+<div class="grid">
+
+<div class="card">
+<h3>🏁 Resultado Real</h3>
+<div class="stat-box"><div class="stat-value highlight">Colombia 1 – 3 Francia</div></div>
+</div>
+
+<div class="card">
+<h3>📊 Rendimiento</h3>
+<p>Total Picks: <strong>4</strong></p>
+<p>Aciertos: <span class="positive">4</span></p>
+<p>Fallos: <span class="negative">0</span></p>
+<p>Hit Rate: <span class="positive">100%</span></p>
+<div class="progress"><div class="progress-bar"></div></div>
+</div>
+
+<div class="card">
+<h3>🎯 Evaluación</h3>
+<select onchange="filterTable(this.value)">
+<option value="all">Todos</option>
+<option value="win">Ganados</option>
+<option value="lose">Perdidos</option>
+</select>
+<table class="table" id="resultsTable">
+<tr><th>Pick</th><th>Estado</th></tr>
+<tr data-type="win"><td>Over 8.5 SoT</td><td class="positive">✔ WIN</td></tr>
+<tr data-type="win"><td>Over 24.5 tiros</td><td class="positive">✔ WIN</td></tr>
+<tr data-type="win"><td>BTTS</td><td class="positive">✔ WIN</td></tr>
+<tr data-type="win"><td>Over 2.5 goles</td><td class="positive">✔ WIN</td></tr>
+</table>
+</div>
+
 </div>
 </div>
+
+</div>
+
 <script>
 function calcEV(input,prob){
 const cuota=parseFloat(input.value);
@@ -137,6 +174,21 @@ const cell=input.parentElement.nextElementSibling;
 cell.innerText=(evPercent>=0?'+':'')+evPercent+'%';
 cell.className=evPercent>10?'positive':evPercent>0?'neutral':'negative';
 }
+
+function showTab(tab,el){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.getElementById(tab).classList.add('active');
+el.classList.add('active');
+}
+
+function filterTable(type){
+const rows=document.querySelectorAll('#resultsTable tr[data-type]');
+rows.forEach(r=>{
+r.style.display=(type==='all'||r.dataset.type===type)?'':'none';
+});
+}
 </script>
+
 </body>
 </html>
