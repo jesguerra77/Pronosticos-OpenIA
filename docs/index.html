@@ -1,389 +1,58 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tipster Dashboard PRO</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
 <style>
-*{box-sizing:border-box}
-
-body{
-margin:0;
-font-family:'Inter',sans-serif;
-background:linear-gradient(135deg,#020617,#0f172a);
-color:#e2e8f0;
-}
-
-.container{
-max-width:1200px;
-margin:auto;
-padding:30px;
-}
-
-/* HEADER PRO */
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:30px;
-padding:20px;
-background:linear-gradient(145deg,#1e293b,#020617);
-border-radius:20px;
-box-shadow:0 10px 40px rgba(0,0,0,0.6);
-}
-
-.teams{
-display:flex;
-align-items:center;
-gap:25px;
-}
-
-.team{
-display:flex;
-align-items:center;
-gap:10px;
-font-weight:600;
-font-size:1.1rem;
-}
-
-.team img{
-width:45px;
-height:45px;
-border-radius:50%;
-border:2px solid #38bdf8;
-}
-
-.score{
-font-size:2rem;
-font-weight:700;
-color:#38bdf8;
-}
-
-/* TABS */
-.tabs{
-display:flex;
-gap:10px;
-margin-bottom:25px;
-}
-
-.tab{
-padding:12px 22px;
-border-radius:12px;
-background:#020617;
-cursor:pointer;
-transition:.3s;
-}
-
-.tab:hover{background:#1e293b}
-
-.tab.active{
-background:linear-gradient(135deg,#38bdf8,#22c55e);
-color:#020617;
-font-weight:700;
-}
-
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:20px;
-}
-
-/* CARDS */
-.card{
-background:linear-gradient(145deg,#1e293b,#020617);
-border-radius:18px;
-padding:22px;
-box-shadow:0 15px 35px rgba(0,0,0,0.5);
-transition:.3s;
-position:relative;
-overflow:hidden;
-}
-
-.card:hover{
-transform:translateY(-6px);
-}
-
-.card h3{
-margin-top:0;
-color:#38bdf8;
-}
-
-/* STATS */
-.projection-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:15px;
-margin-top:15px;
-}
-
-.stat-box{
-background:#020617;
-padding:15px;
-border-radius:12px;
-text-align:center;
-border:1px solid #1e293b;
-}
-
-.stat-title{
-font-size:0.75rem;
-color:#94a3b8;
-}
-
-.stat-value{
-font-size:1.4rem;
-font-weight:700;
-}
-
-.highlight{color:#22c55e}
-
-/* TABLE */
-.table{
-width:100%;
-margin-top:10px;
-border-collapse:collapse;
-}
-
-.table th{
-color:#94a3b8;
-padding:10px;
-}
-
-.table td{
-padding:12px;
-border-top:1px solid #1e293b;
-text-align:center;
-}
-
-input{
-width:70px;
-padding:6px;
-border-radius:8px;
-border:none;
-background:#020617;
-color:white;
-text-align:center;
-}
-
-/* COLORS */
-.positive{color:#22c55e;font-weight:bold}
-.neutral{color:#facc15}
-.negative{color:#ef4444}
-
-/* PICKS PRO */
-.picks{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-margin-top:10px;
-}
-
-.pick-chip{
-padding:10px 15px;
-border-radius:20px;
-background:#020617;
-border:1px solid #1e293b;
-font-size:0.9rem;
-}
-
-.top{background:#22c55e;color:#020617}
-.value{background:#facc15;color:#020617}
-
-/* PROGRESS */
-.progress{
-background:#020617;
-border-radius:10px;
-height:14px;
-overflow:hidden;
-margin-top:10px;
-}
-
-.progress-bar{
-height:100%;
-background:linear-gradient(90deg,#22c55e,#38bdf8);
-width:100%;
-}
-
-/* TABLE FILTER */
-select{
-padding:6px;
-border-radius:6px;
-background:#020617;
-color:white;
-border:none;
-margin-bottom:10px;
-}
-
-.section{display:none}
-.section.active{display:block}
-
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<!-- HEADER -->
-<div class="header">
-<div class="teams">
-
-<div class="team">
-<img src="https://flagcdn.com/w40/co.png">
-Colombia
-</div>
-
-<div class="score">1 - 3</div>
-
-<div class="team">
-Francia
-<img src="https://flagcdn.com/w40/fr.png">
-</div>
-
-</div>
-
-<div><strong>Modelo V6.8</strong></div>
-</div>
-
-<!-- TABS -->
-<div class="tabs">
-<div class="tab active" onclick="showTab('pred',this)">📊 Predicción</div>
-<div class="tab" onclick="showTab('results',this)">🏁 Resultados</div>
-</div>
-
-<!-- PRED -->
-<div id="pred" class="section active">
-<div class="grid">
-
-<div class="card">
-<h3>📈 Proyección</h3>
-<div class="projection-grid">
-<div class="stat-box"><div class="stat-title">Total SoT</div><div class="stat-value">8–10</div></div>
-<div class="stat-box"><div class="stat-title">Tiros</div><div class="stat-value">22–28</div></div>
-<div class="stat-box"><div class="stat-title">BTTS</div><div class="stat-value highlight">59%</div></div>
-<div class="stat-box"><div class="stat-title">Over 2.5</div><div class="stat-value">55%</div></div>
-</div>
-</div>
-
-<div class="card">
-<h3>🎯 Mercados</h3>
-<table class="table">
-<tr><th>Pick</th><th>Prob</th><th>Cuota</th><th>EV</th></tr>
-
-<tr>
-<td>Over 8.5 SoT</td>
-<td>62%</td>
-<td><input value="1.80" onchange="calcEV(this,0.62)"></td>
-<td class="positive">+11%</td>
-</tr>
-
-<tr>
-<td>Over 24.5 tiros</td>
-<td>58%</td>
-<td><input value="1.95" onchange="calcEV(this,0.58)"></td>
-<td class="positive">+13%</td>
-</tr>
-
-<tr>
-<td>BTTS</td>
-<td>59%</td>
-<td><input value="1.80" onchange="calcEV(this,0.59)"></td>
-<td class="neutral">+6%</td>
-</tr>
-
-<tr>
-<td>Over 2.5</td>
-<td>55%</td>
-<td><input value="1.90" onchange="calcEV(this,0.55)"></td>
-<td class="neutral">+4%</td>
-</tr>
-
-</table>
-</div>
-
-<div class="card">
-<h3>🏆 Picks</h3>
-<div class="picks">
-<div class="pick-chip top">Over 8.5 SoT</div>
-<div class="pick-chip top">Over 24.5 tiros</div>
-<div class="pick-chip value">BTTS</div>
-<div class="pick-chip value">Over 2.5</div>
-</div>
-</div>
-
-</div>
-</div>
-
-<!-- RESULTS -->
-<div id="results" class="section">
-<div class="grid">
-
-<div class="card">
-<h3>🏁 Resultado</h3>
-<div class="stat-box"><div class="stat-value highlight">1 - 3</div></div>
-</div>
-
-<div class="card">
-<h3>📊 Rendimiento</h3>
-<p>4 Picks | <span class="positive">4W</span> - <span class="negative">0L</span></p>
-<p>Hit Rate: <span class="positive">100%</span></p>
-<div class="progress"><div class="progress-bar"></div></div>
-</div>
-
-<div class="card">
-<h3>🎯 Evaluación</h3>
-
-<select onchange="filterTable(this.value)">
-<option value="all">Todos</option>
-<option value="win">Ganados</option>
-<option value="lose">Perdidos</option>
-</select>
-
-<table class="table" id="resultsTable">
-<tr><th>Pick</th><th>Estado</th></tr>
-<tr data-type="win"><td>Over 8.5 SoT</td><td class="positive">✔ WIN</td></tr>
-<tr data-type="win"><td>Over 24.5 tiros</td><td class="positive">✔ WIN</td></tr>
-<tr data-type="win"><td>BTTS</td><td class="positive">✔ WIN</td></tr>
-<tr data-type="win"><td>Over 2.5</td><td class="positive">✔ WIN</td></tr>
-</table>
-
-</div>
-
-</div>
-</div>
-
-</div>
-
-<script>
-function calcEV(input,prob){
-const cuota=parseFloat(input.value);
-if(!cuota||cuota<=0)return;
-
-const ev=(prob*cuota)-1;
-const evPercent=(ev*100).toFixed(1);
-const cell=input.parentElement.nextElementSibling;
-
-cell.innerText=(evPercent>=0?'+':'')+evPercent+'%';
-cell.className=evPercent>10?'positive':evPercent>0?'neutral':'negative';
-}
-
-function showTab(tab,el){
-document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.getElementById(tab).classList.add('active');
-el.classList.add('active');
-}
-
-function filterTable(type){
-const rows=document.querySelectorAll('#resultsTable tr[data-type]');
-rows.forEach(r=>{
-r.style.display=(type==='all'||r.dataset.type===type)?'':'none';
-});
-}
-</script>
-
-</body>
-</html>
+  /* ===== MEDIA QUERIES ===== */
+  @media (max-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    .teams {
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+    }
+    .score {
+      font-size: 1.8rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .header {
+      flex-direction: column;
+      gap: 15px;
+      text-align: center;
+      padding: 15px;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+    .pick-chip {
+      font-size: 0.8rem;
+      padding: 8px 12px;
+    }
+    .stat-value {
+      font-size: 1.2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .teams .team {
+      font-size: 0.9rem;
+    }
+    .score {
+      font-size: 1.5rem;
+    }
+    table.table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    input {
+      width: 60px;
+    }
+  }
+  </style>
