@@ -3,88 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sports Betting Dashboard</title>
+<title>Pro Betting Dashboard</title>
 
 <style>
 :root {
   --bg: #0f172a;
-  --card: #1e293b;
+  --card: rgba(30, 41, 59, 0.6);
   --accent: #38bdf8;
   --win: #22c55e;
   --lose: #ef4444;
   --text: #e2e8f0;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
 body {
-  background: var(--bg);
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #020617);
   color: var(--text);
-  padding: 20px;
 }
 
 .container {
   max-width: 1200px;
   margin: auto;
+  padding: 20px;
 }
 
+/* CARD BASE */
 .card {
   background: var(--card);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
   padding: 20px;
-  border-radius: 12px;
   margin-bottom: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  transition: 0.3s;
 }
 
-h2 {
-  margin-bottom: 10px;
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* MATCH HEADER */
+.match {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.team img {
+  width: 40px;
+  border-radius: 50%;
+}
+
+.score {
+  font-size: 28px;
+  font-weight: bold;
   color: var(--accent);
 }
 
+/* GRID */
 .grid {
   display: grid;
-  gap: 15px;
+  gap: 20px;
 }
 
 .grid-2 {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
+/* PICKS */
 .pick {
-  padding: 10px;
-  border-radius: 8px;
-  background: #334155;
+  padding: 12px;
+  border-radius: 10px;
+  background: #1e293b;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
-.win { background: var(--win); color: black; }
-.lose { background: var(--lose); }
+.win { border-left: 5px solid var(--win); }
+.lose { border-left: 5px solid var(--lose); }
 
 .badge {
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
   font-size: 12px;
 }
 
-.flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.top { background: #38bdf8; color: black; }
+.value { background: #a78bfa; }
+
+/* METRICS */
+.metric {
+  font-size: 18px;
+  margin-bottom: 5px;
 }
 
 .progress {
   height: 10px;
-  background: #334155;
+  background: #1e293b;
   border-radius: 5px;
   overflow: hidden;
 }
 
 .progress-bar {
   height: 100%;
-  background: var(--accent);
+  background: linear-gradient(90deg, #22c55e, #38bdf8);
+}
+
+/* TITLES */
+h2 {
+  margin-bottom: 15px;
+  color: var(--accent);
 }
 
 </style>
@@ -94,58 +130,66 @@ h2 {
 
 <div class="container">
 
-  <!-- HEADER -->
-  <div class="card">
-    <h2>⚽ Colombia vs Francia</h2>
-    <p>Amistoso Internacional | Resultado: <strong>1-3</strong></p>
-    <p>Ganador: <strong>Francia</strong></p>
+  <!-- MATCH HEADER -->
+  <div class="card match">
+    <div class="team">
+      <img src="https://flagcdn.com/w40/co.png">
+      <span>Colombia</span>
+    </div>
+
+    <div class="score">1 - 3</div>
+
+    <div class="team">
+      <span>Francia</span>
+      <img src="https://flagcdn.com/w40/fr.png">
+    </div>
   </div>
 
-  <!-- MODEL PROJECTION -->
-  <div class="card">
-    <h2>📊 Proyección del Modelo</h2>
-    <div class="grid grid-2">
-      <div>Goles Colombia: 1.2</div>
-      <div>Goles Francia: 1.8</div>
-      <div>Prob Victoria COL: 30%</div>
-      <div>Prob Empate: 25%</div>
-      <div>Prob Victoria FRA: 45%</div>
-      <div>BTTS: 59%</div>
-      <div>Over 2.5: 55%</div>
+  <!-- GRID -->
+  <div class="grid grid-2">
+
+    <!-- MODEL -->
+    <div class="card">
+      <h2>📊 Modelo</h2>
+      <div class="metric">Goles: 1.2 vs 1.8</div>
+      <div class="metric">BTTS: 59%</div>
+      <div class="metric">Over 2.5: 55%</div>
     </div>
+
+    <!-- HISTORIAL -->
+    <div class="card">
+      <h2>📈 Rendimiento</h2>
+      <div class="metric">Win Rate: 100%</div>
+      <div class="progress">
+        <div class="progress-bar" style="width:100%"></div>
+      </div>
+      <p>4W - 0L</p>
+    </div>
+
   </div>
 
   <!-- PICKS -->
-  <div class="card">
-    <h2>🔥 Top Picks</h2>
-    <div id="top-picks"></div>
-  </div>
+  <div class="grid grid-2">
 
-  <div class="card">
-    <h2>💎 Value Picks</h2>
-    <div id="value-picks"></div>
-  </div>
-
-  <!-- HISTORIAL -->
-  <div class="card">
-    <h2>📈 Historial</h2>
-    <p>Total Picks: 4</p>
-    <p>Ganados: 4</p>
-    <p>Perdidos: 0</p>
-    <p>Hit Rate: 100%</p>
-
-    <div class="progress">
-      <div class="progress-bar" style="width:100%"></div>
+    <div class="card">
+      <h2>🔥 Top Picks</h2>
+      <div id="top"></div>
     </div>
+
+    <div class="card">
+      <h2>💎 Value Picks</h2>
+      <div id="value"></div>
+    </div>
+
   </div>
 
   <!-- FEEDBACK -->
   <div class="card">
-    <h2>🧠 Model Feedback</h2>
+    <h2>🧠 Feedback</h2>
     <ul>
       <li>Correcta lectura de partido abierto</li>
-      <li>Precisión alta en mercados de goles y BTTS</li>
-      <li>Ligera subestimación en total de goles</li>
+      <li>Alta precisión en goles</li>
+      <li>Subestimación ligera</li>
     </ul>
   </div>
 
@@ -163,34 +207,34 @@ const data = {
       { market: "over_2.5_goals", ev: 0.045 }
     ]
   },
-  pick_results: [
-    { market: "over_8.5_shots_on_target", result: "win" },
-    { market: "over_24.5_shots_total", result: "win" },
-    { market: "btts_yes", result: "win" },
-    { market: "over_2.5_goals", result: "win" }
-  ]
+  results: {
+    "over_8.5_shots_on_target": "win",
+    "over_24.5_shots_total": "win",
+    "btts_yes": "win",
+    "over_2.5_goals": "win"
+  }
 };
 
-function renderPicks(type, containerId) {
-  const container = document.getElementById(containerId);
+function render(type, id, badgeClass) {
+  const container = document.getElementById(id);
 
-  data.picks[type].forEach(pick => {
-    const result = data.pick_results.find(r => r.market === pick.market);
+  data.picks[type].forEach(p => {
+    const result = data.results[p.market];
 
-    const div = document.createElement("div");
-    div.className = "pick flex " + (result?.result === "win" ? "win" : "lose");
+    const el = document.createElement("div");
+    el.className = "pick " + (result === "win" ? "win" : "lose");
 
-    div.innerHTML = `
-      <span>${pick.market}</span>
-      <span>EV: ${(pick.ev * 100).toFixed(1)}%</span>
+    el.innerHTML = `
+      <span>${p.market}</span>
+      <span class="badge ${badgeClass}">${(p.ev*100).toFixed(1)}%</span>
     `;
 
-    container.appendChild(div);
+    container.appendChild(el);
   });
 }
 
-renderPicks("top", "top-picks");
-renderPicks("value", "value-picks");
+render("top", "top", "top");
+render("value", "value", "value");
 </script>
 
 </body>
