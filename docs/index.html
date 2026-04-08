@@ -3,68 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Champions Dashboard</title>
+<title>Champions Dashboard PRO</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{
 margin:0;
 font-family:'Inter',sans-serif;
-background:linear-gradient(135deg,#020617,#0f172a);
-color:#e2e8f0;
+background:#0b1220;
+color:#e5e7eb;
 }
 
 .container{
-max-width:1200px;
+max-width:1100px;
 margin:auto;
 padding:20px;
 }
 
-h1{
-text-align:center;
-margin-bottom:30px;
-color:#38bdf8;
+/* NAV */
+.nav{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+justify-content:center;
+flex-wrap:wrap;
 }
 
-/* CARD MATCH */
-.match-card{
-background:linear-gradient(145deg,#1e293b,#020617);
-border-radius:20px;
+.btn{
+padding:10px 18px;
+background:#1f2937;
+border-radius:10px;
+cursor:pointer;
+transition:.2s;
+}
+
+.btn.active{
+background:#3b82f6;
+color:white;
+}
+
+/* MATCH */
+.match{
+display:none;
+}
+
+.match.active{
+display:block;
+}
+
+/* HEADER */
+.header{
+background:#111827;
 padding:20px;
-margin-bottom:25px;
-box-shadow:0 15px 40px rgba(0,0,0,0.6);
+border-radius:14px;
+margin-bottom:20px;
 }
 
-.match-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:15px;
-}
-
-.teams{
-display:flex;
-align-items:center;
-gap:15px;
-}
-
-.team{
-display:flex;
-align-items:center;
-gap:8px;
+.title{
+font-size:1.4rem;
 font-weight:600;
+margin-bottom:5px;
 }
 
-.team img{
-width:35px;
-border-radius:50%;
-border:2px solid #38bdf8;
-}
-
-.vs{
-font-weight:bold;
-color:#38bdf8;
+.subtitle{
+font-size:0.9rem;
+color:#9ca3af;
 }
 
 /* GRID */
@@ -74,47 +78,61 @@ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:15px;
 }
 
-/* CARD INNER */
+/* CARD */
 .card{
-background:#020617;
+background:#111827;
 padding:15px;
 border-radius:12px;
 }
 
 .card h3{
 margin-top:0;
-color:#38bdf8;
+color:#60a5fa;
 }
-
-/* PICKS */
-.pick{
-padding:6px 10px;
-border-radius:10px;
-margin:5px 0;
-display:inline-block;
-}
-
-.top{background:#22c55e;color:black}
-.value{background:#facc15;color:black}
-.risk{background:#ef4444}
 
 /* PROB */
+.prob{
+margin-bottom:10px;
+}
+
 .bar{
-height:10px;
-background:#1e293b;
+height:8px;
+background:#1f2937;
 border-radius:5px;
 overflow:hidden;
-margin-top:5px;
 }
 
 .fill{
 height:100%;
-background:#38bdf8;
+background:#3b82f6;
+}
+
+/* PICKS */
+.pick{
+padding:10px;
+border-radius:10px;
+margin-bottom:10px;
+border:1px solid #1f2937;
+}
+
+.pick-header{
+font-weight:600;
+margin-bottom:5px;
+}
+
+/* CONF COLORS */
+.alta{background:#052e16;border-color:#22c55e}
+.media{background:#3f2d00;border-color:#facc15}
+.baja{background:#3b0a0a;border-color:#ef4444}
+
+.meta{
+font-size:0.85rem;
+color:#9ca3af;
 }
 
 /* RESPONSIVE */
-@media(max-width:768px){
-.match-header{flex-direction:column;gap:10px}
+@media(max-width:600px){
+.title{font-size:1.1rem}
 }
 </style>
 </head>
@@ -122,129 +140,121 @@ background:#38bdf8;
 <body>
 
 <div class="container">
-<h1>🏆 Champions League Dashboard</h1>
+
+<div class="nav">
+<div class="btn active" onclick="showMatch(0,this)">Real Madrid vs Bayern</div>
+<div class="btn" onclick="showMatch(1,this)">Sporting vs Arsenal</div>
+</div>
+
 <div id="app"></div>
+
 </div>
 
 <script>
-const data = [
+const data=[
 
-// PARTIDO 1
+// MATCH 1
 {
-match_info:{home_team:"Real Madrid",away_team:"Bayern Munich",stadium:"Santiago Bernabeu"},
-probabilities:{home_win:0.42,draw:0.30,away_win:0.28},
-expected_goals:{"Real Madrid":1.4,"Bayern Munich":1.3},
-microstats:{
-shots:{"Real Madrid":[12,15],"Bayern Munich":[11,14]},
-shots_on_target:{"Real Madrid":[4,6],"Bayern Munich":[4,5]}
+info:{
+teams:"Real Madrid vs Bayern Munich",
+stadium:"Santiago Bernabeu"
 },
+prob:{home:0.42,draw:0.30,away:0.28},
+xg:{"Real Madrid":1.4,"Bayern Munich":1.3},
 picks:{
 top:[
-{selection:"Real Madrid +3.5"},
-{selection:"Bayern Munich +3.5"}
+{market:"Shots on Target",selection:"Real Madrid +3.5",confidence:"Alta",ev:"Alto"},
+{market:"Shots on Target",selection:"Bayern Munich +3.5",confidence:"Alta",ev:"Alto"}
 ],
 value:[
-{selection:"Under 3.0"},
-{selection:"Empate"}
+{market:"Goals",selection:"Under 3.0",confidence:"Media",ev:"Positivo"},
+{market:"1X2",selection:"Empate",confidence:"Media",ev:"Moderado"}
 ],
 risk:[
-{selection:"1-1"},
-{selection:"BTTS Yes"}
+{market:"Correct Score",selection:"1-1",confidence:"Media",ev:"Alto"},
+{market:"BTTS",selection:"Yes",confidence:"Media",ev:"Moderado"}
 ]
-},
-prediction:{main:"1-1"}
+}
 },
 
-// PARTIDO 2
+// MATCH 2
 {
-match_info:{home_team:"Sporting CP",away_team:"Arsenal",stadium:"Jose Alvalade"},
-probabilities:{home_win:0.28,draw:0.29,away_win:0.43},
-expected_goals:{"Sporting CP":1.1,"Arsenal":1.5},
-microstats:{
-shots:{"Sporting CP":[10,13],"Arsenal":[12,15]},
-shots_on_target:{"Sporting CP":[3,4],"Arsenal":[4,6]}
+info:{
+teams:"Sporting CP vs Arsenal",
+stadium:"Jose Alvalade"
 },
+prob:{home:0.28,draw:0.29,away:0.43},
+xg:{"Sporting CP":1.1,"Arsenal":1.5},
 picks:{
 top:[
-{selection:"Arsenal +3.5"},
-{selection:"Sporting CP +2.5"}
+{market:"Shots on Target",selection:"Arsenal +3.5",confidence:"Alta",ev:"Alto"},
+{market:"Shots on Target",selection:"Sporting CP +2.5",confidence:"Alta",ev:"Alto"}
 ],
 value:[
-{selection:"Under 3.0"},
-{selection:"Arsenal"}
+{market:"Goals",selection:"Under 3.0",confidence:"Media",ev:"Positivo"},
+{market:"1X2",selection:"Arsenal",confidence:"Media",ev:"Moderado"}
 ],
 risk:[
-{selection:"0-1"},
-{selection:"Empate"}
+{market:"Correct Score",selection:"0-1",confidence:"Media",ev:"Alto"},
+{market:"1X2",selection:"Empate",confidence:"Media",ev:"Moderado"}
 ]
-},
-prediction:{main:"0-1"}
+}
 }
 
 ];
 
-const flags={
-"Real Madrid":"es",
-"Bayern Munich":"de",
-"Sporting CP":"pt",
-"Arsenal":"gb"
-};
+function sortPicks(arr){
+const order={Alta:1,Media:2,Baja:3};
+return arr.sort((a,b)=>order[a.confidence]-order[b.confidence]);
+}
+
+function getClass(c){
+return c.toLowerCase();
+}
 
 function render(){
 const app=document.getElementById("app");
 
-data.forEach(m=>{
+data.forEach((m,i)=>{
 const el=document.createElement("div");
-el.className="match-card";
+el.className="match "+(i===0?"active":"");
+
+const all=[...m.picks.top,...m.picks.value,...m.picks.risk];
+const sorted=sortPicks(all);
 
 el.innerHTML=`
-<div class="match-header">
-  <div class="teams">
-    <div class="team">
-      <img src="https://flagcdn.com/w40/${flags[m.match_info.home_team]}.png">
-      ${m.match_info.home_team}
-    </div>
-
-    <div class="vs">VS</div>
-
-    <div class="team">
-      ${m.match_info.away_team}
-      <img src="https://flagcdn.com/w40/${flags[m.match_info.away_team]}.png">
-    </div>
-  </div>
-
-  <div>${m.match_info.stadium}</div>
+<div class="header">
+<div class="title">${m.info.teams}</div>
+<div class="subtitle">${m.info.stadium}</div>
 </div>
 
 <div class="grid">
 
 <div class="card">
 <h3>📊 Probabilidades</h3>
-Home: ${(m.probabilities.home_win*100).toFixed(0)}%
-<div class="bar"><div class="fill" style="width:${m.probabilities.home_win*100}%"></div></div>
+<div class="prob">Local ${(m.prob.home*100).toFixed(0)}%</div>
+<div class="bar"><div class="fill" style="width:${m.prob.home*100}%"></div></div>
 
-Draw: ${(m.probabilities.draw*100).toFixed(0)}%
-<div class="bar"><div class="fill" style="width:${m.probabilities.draw*100}%"></div></div>
+<div class="prob">Empate ${(m.prob.draw*100).toFixed(0)}%</div>
+<div class="bar"><div class="fill" style="width:${m.prob.draw*100}%"></div></div>
 
-Away: ${(m.probabilities.away_win*100).toFixed(0)}%
-<div class="bar"><div class="fill" style="width:${m.probabilities.away_win*100}%"></div></div>
+<div class="prob">Visitante ${(m.prob.away*100).toFixed(0)}%</div>
+<div class="bar"><div class="fill" style="width:${m.prob.away*100}%"></div></div>
 </div>
 
 <div class="card">
 <h3>⚡ xG</h3>
-${Object.entries(m.expected_goals).map(([k,v])=>`${k}: ${v}`).join("<br>")}
+${Object.entries(m.xg).map(([k,v])=>`${k}: <strong>${v}</strong>`).join("<br>")}
 </div>
 
 <div class="card">
-<h3>🎯 Picks</h3>
-${m.picks.top.map(p=>`<div class="pick top">${p.selection}</div>`).join("")}
-${m.picks.value.map(p=>`<div class="pick value">${p.selection}</div>`).join("")}
-${m.picks.risk.map(p=>`<div class="pick risk">${p.selection}</div>`).join("")}
+<h3>🎯 Picks (ordenados por confianza)</h3>
+${sorted.map(p=>`
+<div class="pick ${getClass(p.confidence)}">
+<div class="pick-header">${p.market} → ${p.selection}</div>
+<div class="meta">Confianza: ${p.confidence} | EV: ${p.ev}</div>
 </div>
-
-<div class="card">
-<h3>🔮 Predicción</h3>
-<strong>${m.prediction.main}</strong>
+`).join("")}
 </div>
 
 </div>
@@ -252,6 +262,13 @@ ${m.picks.risk.map(p=>`<div class="pick risk">${p.selection}</div>`).join("")}
 
 app.appendChild(el);
 });
+}
+
+function showMatch(i,el){
+document.querySelectorAll('.match').forEach(m=>m.classList.remove('active'));
+document.querySelectorAll('.btn').forEach(b=>b.classList.remove('active'));
+document.querySelectorAll('.match')[i].classList.add('active');
+el.classList.add('active');
 }
 
 render();
