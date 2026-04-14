@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tipster Dashboard PRO</title>
+<title>Tipster Dashboard</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -15,64 +15,31 @@ background:#0b1220;
 color:#e5e7eb;
 }
 
-.container{
-max-width:1100px;
-margin:auto;
-padding:20px;
-}
+.container{max-width:1100px;margin:auto;padding:20px}
 
-/* GLOBAL NAV */
-.main-tabs{
-display:flex;
-gap:10px;
-justify-content:center;
-margin-bottom:20px;
-}
+/* TABS */
+.tabs{display:flex;gap:10px;justify-content:center;margin-bottom:20px}
+.tab{padding:10px 20px;background:#1f2937;border-radius:10px;cursor:pointer}
+.tab.active{background:#3b82f6}
 
-.main-tab{
-padding:10px 18px;
-background:#1f2937;
-border-radius:10px;
-cursor:pointer;
-}
-
-.main-tab.active{
-background:#3b82f6;
-}
-
-/* SUB NAV */
-.nav{
-display:flex;
-gap:10px;
-margin-bottom:20px;
-justify-content:center;
-flex-wrap:wrap;
-}
-
-.btn{
-padding:8px 14px;
-background:#1f2937;
-border-radius:8px;
-cursor:pointer;
-}
-
-.btn.active{
-background:#2563eb;
-}
-
-/* SECTIONS */
-.section{display:none;}
+/* SECTION */
+.section{display:none}
 .section.active{display:block}
 
 /* CARD */
 .card{
 background:#111827;
-padding:15px;
-border-radius:12px;
-margin-bottom:15px;
+padding:20px;
+border-radius:14px;
+margin-bottom:20px;
 }
 
-.card h3{color:#60a5fa;margin-top:0}
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:15px;
+}
 
 /* PICKS */
 .pick{
@@ -82,13 +49,13 @@ margin-bottom:8px;
 border:1px solid #1f2937;
 }
 
-.alta{background:#052e16}
-.media{background:#3f2d00}
-.baja{background:#3b0a0a}
+.top{background:#052e16}
+.value{background:#3f2d00}
+.risk{background:#3b0a0a}
 
-/* RESULTS */
-.win{color:#22c55e}
-.loss{color:#ef4444}
+/* PROB BAR */
+.bar{height:8px;background:#1f2937;border-radius:5px;margin-top:5px}
+.fill{height:100%;background:#3b82f6}
 
 </style>
 </head>
@@ -97,195 +64,99 @@ border:1px solid #1f2937;
 
 <div class="container">
 
-<!-- MAIN TABS -->
-<div class="main-tabs">
-<div class="main-tab active" onclick="showSection('pred',this)">📊 Pronósticos</div>
-<div class="main-tab" onclick="showSection('results',this)">🏁 Resultados</div>
+<div class="tabs">
+<div class="tab active" onclick="showTab('pred',this)">📊 Pronóstico</div>
+<div class="tab" onclick="showTab('res',this)">🏁 Resultados</div>
 </div>
 
-<!-- ===================== -->
-<!-- 📊 PREDICCIONES -->
-<!-- ===================== -->
+<!-- ========================= -->
+<!-- PRONOSTICO -->
+<!-- ========================= -->
 <div id="pred" class="section active">
 
-<div class="nav">
-<div class="btn active" onclick="showMatch('pred',0,this)">Real Madrid vs Bayern</div>
-<div class="btn" onclick="showMatch('pred',1,this)">Sporting vs Arsenal</div>
+<div class="card">
+<h2>Barcelona vs Atlético Madrid</h2>
+<p><strong>Modelo:</strong> V6.6</p>
+<p><strong>Simulación:</strong> 50,000 iteraciones</p>
 </div>
 
-<div id="predContainer"></div>
+<div class="grid">
+
+<div class="card">
+<h3>📊 Probabilidades</h3>
+
+Barcelona 51.8%
+<div class="bar"><div class="fill" style="width:51.8%"></div></div>
+
+Empate 23.6%
+<div class="bar"><div class="fill" style="width:23.6%"></div></div>
+
+Atlético 24.6%
+<div class="bar"><div class="fill" style="width:24.6%"></div></div>
+</div>
+
+<div class="card">
+<h3>🔮 Predicción</h3>
+
+<p><strong>Principal:</strong> 2-1</p>
+<p>Barcelona impone volumen ofensivo alto (SoT elevado) y genera múltiples ocasiones sostenidas. Atlético resiste en bloque bajo pero encuentra una transición efectiva para marcar. Partido competitivo donde Barcelona gana pero no controla completamente.</p>
+
+<hr>
+
+<p><strong>Alternativa:</strong> 3-1</p>
+<p>Escenario de ruptura tras gol temprano del Barcelona. El partido se abre, aumenta el ritmo y los espacios favorecen múltiples ocasiones. Barcelona capitaliza su presión ofensiva y amplía la ventaja.</p>
+</div>
+
+<div class="card">
+<h3>🎯 Picks TOP</h3>
+
+<div class="pick top">Barcelona +5.5 SoT (78%)</div>
+<div class="pick top">Over 2.0 goles (72%)</div>
+<div class="pick top">Barcelona +1.5 goles (64%)</div>
 
 </div>
 
-<!-- ===================== -->
-<!-- 🏁 RESULTADOS -->
-<!-- ===================== -->
-<div id="results" class="section">
+<div class="card">
+<h3>💡 Picks VALUE</h3>
 
-<div class="nav">
-<div class="btn active" onclick="showMatch('res',0,this)">Real Madrid vs Bayern</div>
-<div class="btn" onclick="showMatch('res',1,this)">Sporting vs Arsenal</div>
+<div class="pick value">BTTS Sí (61%)</div>
+<div class="pick value">Barcelona gana (51.8%)</div>
+<div class="pick value">Over 2.5 goles (58%)</div>
+
 </div>
 
-<div id="resultsContainer"></div>
+<div class="card">
+<h3>⚠️ Picks RIESGO</h3>
+
+<div class="pick risk">Empate (23.6%)</div>
+<div class="pick risk">Atlético gana (24.6%)</div>
+
+</div>
+
+</div>
+</div>
+
+<!-- ========================= -->
+<!-- RESULTADOS -->
+<!-- ========================= -->
+<div id="res" class="section">
+
+<div class="card">
+<h3>🏁 Resultados</h3>
+<p>No hay resultados disponibles todavía.</p>
+</div>
 
 </div>
 
 </div>
 
 <script>
-
-/* =========================
-📊 PREDICCIONES (SIN RESULTADOS)
-========================= */
-const predictionsData = [
-{
-name:"Real Madrid vs Bayern Munich",
-picks:[
-{market:"Shots on Target",selection:"Real Madrid +3.5",confidence:"Alta",ev:"Alto"},
-{market:"Shots on Target",selection:"Bayern Munich +3.5",confidence:"Alta",ev:"Alto"},
-{market:"Goals",selection:"Under 3.0",confidence:"Media",ev:"Positivo"},
-{market:"1X2",selection:"Empate",confidence:"Media",ev:"Moderado"},
-{market:"Correct Score",selection:"1-1",confidence:"Media",ev:"Alto"},
-{market:"BTTS",selection:"Yes",confidence:"Media",ev:"Moderado"}
-]
-},
-{
-name:"Sporting CP vs Arsenal",
-picks:[
-{market:"Shots on Target",selection:"Arsenal +3.5",confidence:"Alta",ev:"Alto"},
-{market:"Shots on Target",selection:"Sporting CP +2.5",confidence:"Alta",ev:"Alto"},
-{market:"Goals",selection:"Under 3.0",confidence:"Media",ev:"Positivo"},
-{market:"1X2",selection:"Arsenal",confidence:"Media",ev:"Moderado"},
-{market:"Correct Score",selection:"0-1",confidence:"Media",ev:"Alto"},
-{market:"1X2",selection:"Empate",confidence:"Media",ev:"Moderado"}
-]
-}
-];
-
-/* =========================
-🏁 RESULTADOS (DATA PURA)
-========================= */
-const resultsData = [
-{
-name:"Real Madrid vs Bayern Munich",
-score:"1-2",
-results:[
-{market:"Shots on Target",selection:"Real Madrid +3.5",result:"win"},
-{market:"Shots on Target",selection:"Bayern Munich +3.5",result:"win"},
-{market:"Goals",selection:"Under 3.0",result:"loss"},
-{market:"1X2",selection:"Empate",result:"loss"},
-{market:"Correct Score",selection:"1-1",result:"loss"},
-{market:"BTTS",selection:"Yes",result:"win"}
-]
-},
-{
-name:"Sporting CP vs Arsenal",
-score:"0-1",
-results:[
-{market:"Shots on Target",selection:"Arsenal +3.5",result:"win"},
-{market:"Shots on Target",selection:"Sporting CP +2.5",result:"win"},
-{market:"Goals",selection:"Under 3.0",result:"win"},
-{market:"1X2",selection:"Arsenal",result:"win"},
-{market:"Correct Score",selection:"0-1",result:"win"},
-{market:"1X2",selection:"Empate",result:"loss"}
-]
-}
-];
-
-/* =========================
-UTILS
-========================= */
-function sortPicks(arr){
-const order={Alta:1,Media:2,Baja:3};
-return arr.sort((a,b)=>order[a.confidence]-order[b.confidence]);
-}
-
-/* =========================
-RENDER PREDICCIONES
-========================= */
-function renderPred(){
-const container=document.getElementById("predContainer");
-
-predictionsData.forEach((m,i)=>{
-const el=document.createElement("div");
-el.className="match "+(i===0?"active":"");
-
-const sorted=sortPicks([...m.picks]);
-
-el.innerHTML=`
-<div class="card">
-<h3>${m.name}</h3>
-
-${sorted.map(p=>`
-<div class="pick ${p.confidence.toLowerCase()}">
-<strong>${p.market} → ${p.selection}</strong><br>
-<span>${p.confidence} | EV: ${p.ev}</span>
-</div>
-`).join("")}
-
-</div>
-`;
-
-container.appendChild(el);
-});
-}
-
-/* =========================
-RENDER RESULTADOS
-========================= */
-function renderResults(){
-const container=document.getElementById("resultsContainer");
-
-resultsData.forEach((m,i)=>{
-const el=document.createElement("div");
-el.className="match "+(i===0?"active":"");
-
-el.innerHTML=`
-<div class="card">
-<h3>${m.name}</h3>
-<p>Resultado: <strong>${m.score}</strong></p>
-
-${m.results.map(r=>`
-<div class="pick">
-<strong>${r.market} → ${r.selection}</strong><br>
-<span class="${r.result==='win'?'win':'loss'}">
-${r.result==='win'?'✔ WIN':'✖ LOSS'}
-</span>
-</div>
-`).join("")}
-
-</div>
-`;
-
-container.appendChild(el);
-});
-}
-
-/* =========================
-NAV
-========================= */
-function showSection(id,el){
+function showTab(id,el){
 document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
 document.getElementById(id).classList.add('active');
 el.classList.add('active');
 }
-
-function showMatch(type,i,el){
-const container = type==='pred' ? "#predContainer" : "#resultsContainer";
-
-document.querySelectorAll(container+' .match').forEach(m=>m.classList.remove('active'));
-document.querySelectorAll('#'+type+' .btn').forEach(b=>b.classList.remove('active'));
-
-document.querySelectorAll(container+' .match')[i].classList.add('active');
-el.classList.add('active');
-}
-
-/* INIT */
-renderPred();
-renderResults();
-
 </script>
 
 </body>
