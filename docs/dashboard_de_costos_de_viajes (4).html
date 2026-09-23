@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <title>Dashboard de Costos de Viajes - Italia 🇮🇹</title>
+    
+    <!-- Preconnect for fast font loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (Optional enhancement layer) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-indigo: #4f46e5;
+            --accent-indigo-light: #eeeffe;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-purple: #9333ea;
+            --border-color: #e2e8f0;
+            --radius-lg: 18px;
+            --radius-md: 12px;
+            --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+            --shadow-lg: 0 12px 24px -4px rgba(15, 23, 42, 0.12);
+        }
+
+        /* Native App Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding-bottom: max(2rem, env(safe-area-inset-bottom));
+            padding-top: max(0.5rem, env(safe-area-inset-top));
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-viewport {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 12px 16px;
+        }
+
+        /* App Top Bar */
+        .app-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .app-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .app-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        @media (min-width: 640px) {
+            .app-title { font-size: 30px; }
+            .app-viewport { padding: 24px 20px; }
+        }
+
+        /* Executive Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            color: #ffffff;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .hero-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .hero-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #a5b4fc;
+            font-weight: 700;
+        }
+
+        .hero-subtext {
+            font-size: 12px;
+            color: #cbd5e1;
+            margin-top: 2px;
+        }
+
+        .hero-amount {
+            font-size: 32px;
+            font-weight: 800;
+            color: #34d399;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        @media (min-width: 640px) {
+            .hero-amount { font-size: 40px; }
+            .hero-banner { padding: 28px; }
+        }
+
+        /* Budget Visual Progress Bar */
+        .progress-container {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .progress-bar-track {
+            height: 10px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 999px;
+            display: flex;
+            overflow: hidden;
+            gap: 2px;
+        }
+
+        .progress-segment {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .segment-alojamiento { background-color: #6366f1; width: 41%; }
+        .segment-entradas { background-color: #c084fc; width: 26%; }
+        .segment-vuelos { background-color: #34d399; width: 18%; }
+        .segment-trenes { background-color: #fbbf24; width: 15%; }
+
+        .progress-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 16px;
+            margin-top: 12px;
+            font-size: 11px;
+            color: #e2e8f0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Filter Navigation Chips */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-tabs::-webkit-scrollbar { display: none; }
+
+        .tab-chip {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 999px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-chip.active {
+            background: var(--text-primary);
+            color: #ffffff;
+            border-color: var(--text-primary);
+        }
+
+        /* Section Containers */
+        .section-block {
+            margin-bottom: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-subtotal {
+            font-size: 12px;
+            font-weight: 700;
+            background: #f1f5f9;
+            color: #334155;
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Responsive Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        @media (min-width: 580px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+        }
+
+        @media (min-width: 820px) {
+            .cards-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+        }
+
+        /* Card Styles */
+        .cost-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .cost-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .category-tag {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .tag-indigo { background: #e0e7ff; color: #3730a3; }
+        .tag-emerald { background: #d1fae5; color: #065f46; }
+        .tag-amber { background: #fef3c7; color: #92400e; }
+        .tag-purple { background: #f3e8ff; color: #6b21a8; }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .card-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .card-bottom {
+            margin-top: 14px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+        }
+
+        .price-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .price-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        /* Family Distribution Box */
+        .family-summary-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        @media (min-width: 580px) {
+            .family-summary-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .family-box {
+            background: #faf5ff;
+            border: 1px solid #e9d5ff;
+            border-radius: var(--radius-md);
+            padding: 12px;
+            text-align: center;
+        }
+
+        .family-name {
+            font-size: 12px;
+            color: #6b21a8;
+            font-weight: 600;
+        }
+
+        .family-total {
+            font-size: 16px;
+            font-weight: 800;
+            color: #581c87;
+            margin-top: 2px;
+        }
+
+        .family-per-capita {
+            font-size: 10px;
+            color: #9333ea;
+        }
+
+        .breakdown-list {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #475569;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
+        }
+
+        /* Icons Safe Constraint */
+        svg {
+            max-width: 20px !important;
+            max-height: 20px !important;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* AI Assistant Section */
+        .ai-card {
+            background: #ffffff;
+            border: 1px solid #c7d2fe;
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .ai-icon {
+            background: #4f46e5;
+            color: #ffffff;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ai-icon svg {
+            max-width: 20px !important;
+            max-height: 20px !important;
+            stroke: #ffffff;
+        }
+
+        .ai-prompt-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            background: #f8fafc;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .ai-prompt-input:focus {
+            background: #ffffff;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .ai-submit-btn {
+            background: #4f46e5;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+            transition: background 0.2s ease;
+        }
+
+        @media (min-width: 580px) {
+            .ai-input-group {
+                display: flex;
+                gap: 8px;
+            }
+            .ai-submit-btn {
+                width: auto;
+                margin-top: 0;
+                white-space: nowrap;
+            }
+        }
+
+        .ai-chip {
+            background: #eef2ff;
+            color: #4338ca;
+            border: 1px solid #c7d2fe;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .ai-chip:hover {
+            background: #e0e7ff;
+        }
+
+        .ai-response {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 14px;
+            margin-top: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .voice-btn {
+            background: #e0e7ff;
+            color: #3730a3;
+            border: none;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-viewport">
+        
+        <!-- Header -->
+        <header class="app-bar">
+            <div>
+                <span class="app-badge">Reporte Italia 🇮🇹</span>
+                <h1 class="app-title" style="margin-top: 4px;">Costos Definitivos de Viaje</h1>
+            </div>
+        </header>
+
+        <!-- Filter Chips for Mobile navigation -->
+        <div class="nav-tabs">
+            <button class="tab-chip active" onclick="filterCategory('all', this)">📋 Todo el Reporte</button>
+            <button class="tab-chip" onclick="filterCategory('alojamiento', this)">🏨 Alojamientos (960 €)</button>
+            <button class="tab-chip" onclick="filterCategory('vuelo', this)">✈️ Vuelos (410 €)</button>
+            <button class="tab-chip" onclick="filterCategory('tren', this)">🚆 Trenes (329 €)</button>
+            <button class="tab-chip" onclick="filterCategory('entrada', this)">🎟️ Entradas (617 €)</button>
+        </div>
+
+        <!-- SECTION 1: ALOJAMIENTOS -->
+        <section class="section-block category-item" data-cat="alojamiento">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    Alojamientos
+                </h2>
+                <span class="section-subtotal">Subtotal: 960,36 €</span>
+            </div>
+
+            <div class="cards-grid">
+                <!-- Venecia -->
+                <div class="cost-card">
+                    <div>
+                        <div class="card-top">
+                            <span class="category-tag tag-indigo">Alojamiento</span>
+                            <span class="price-label">Italia</span>
+                        </div>
+                        <h3 class="card-title">Venecia</h3>
+                        <p class="card-desc">Reserva confirmada y pagada</p>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="price-label">Pagado</span>
+                        <span class="price-value">405,76 €</span>
+                    </div>
+                </div>
+
+                <!-- Florencia -->
+                <div class="cost-card">
+                    <div>
+                        <div class="card-top">
+                            <span class="category-tag tag-indigo">Alojamiento</span>
+                            <span class="price-label">Italia</span>
+                        </div>
+                        <h3 class="card-title">Florencia</h3>
+                        <p class="card-desc">Reserva confirmada y pagada</p>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="price-label">Pagado</span>
+                        <span class="price-value">217,60 €</span>
+                    </div>
+                </div>
+
+                <!-- Roma -->
+                <div class="cost-card">
+                    <div>
+                        <div class="card-top">
+                            <span class="category-tag tag-indigo">Alojamiento</span>
+                            <span class="price-label">Italia</span>
+                        </div>
+                        <h3 class="card-title">Roma</h3>
+                        <p class="card-desc">Reserva confirmada y pagada</p>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="price-label">Pagado</span>
+                        <span class="price-value">337,00 €</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: VUELOS -->
+        <section class="section-block category-item" data-cat="vuelo">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                    Vuelos
+                </h2>
+                <span class="section-subtotal">Subtotal: 410,82 €</span>
+            </div>
+
+            <div class="cards-grid">
+                <!-- Ida -->
+                <div class="cost-card">
+                    <div>
+                        <div class="card-top">
+                            <span class="category-tag tag-emerald">Vuelo Ida</span>
+                            <span class="price-label">2 Familias</span>
+                        </div>
+                        <h3 class="card-title">Valencia ➔ Venecia</h3>
+                        <div class="breakdown-list">
+                            <div class="breakdown-item"><span>Esguerra:</span> <strong>113,10 €</strong></div>
+                            <div class="breakdown-item"><span>Rayran:</span> <strong>83,97 €</strong></div>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="price-label">Total Ida</span>
+                        <span class="price-value">197,07 €</span>
+                    </div>
+                </div>
+
+                <!-- Vuelta -->
+                <div class="cost-card">
+                    <div>
+                        <div class="card-top">
+                            <span class="category-tag tag-emerald">Vuelo Vuelta</span>
+                            <span class="price-label">2 Familias</span>
+                        </div>
+                        <h3 class="card-title">Roma ➔ Valencia</h3>
+                        <p class="card-desc">Dividido entre Esguerra y Rayran</p>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="price-label">Total Vuelta</span>
+                        <span class="price-value">213,75 €</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: TRENES -->
+        <section class="section-block category-item" data-cat="tren">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7h8M8 11h8m-9 4h10M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>
+                    Trenes y Desplazamientos
+                </h2>
+                <span class="section-subtotal">Subtotal: 329,50 €</span>
+            </div>
+
+            <div class="cards-grid">
+                <div class="cost-card">
+                    <div>
+                        <div class="card-top">
+                            <span class="category-tag tag-amber">Tren Intercity</span>
+                            <span class="price-label">Ambas fam</span>
+                        </div>
+                        <h3 class="card-title">Venecia ➔ Florencia</h3>
+                        <p class="card-desc">Pasajes pagados de alta velocidad</p>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="price-label">Pagado</span>
+                        <span class="price-value">179,50 €</span>
+                    </div>
+                </div>
+
+                <div class="cost-card">
+                    <div>
+                        <div class="card-top">
+                            <span class="category-tag tag-amber">Tren Intercity</span>
+                            <span class="price-label">Ambas fam</span>
+                        </div>
+                        <h3 class="card-title">Florencia ➔ Roma</h3>
+                        <p class="card-desc">Pasajes pagados de alta velocidad</p>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="price-label">Pagado</span>
+                        <span class="price-value">100,00 €</span>
+                    </div>
+                </div>
+
+                <div class="cost-card">
+                    <div>
+                        <div class="card-top">
+                            <span class="category-tag tag-amber">Local</span>
+                            <span class="price-label">Estimado</span>
+                        </div>
+                        <h3 class="card-title">Movilidad Local</h3>
+                        <p class="card-desc">Buses, vaporettos y metro urbano</p>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="price-label">Estimación</span>
+                        <span class="price-value">50,00 €</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: ENTRADAS -->
+        <section class="section-block category-item" data-cat="entrada">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
+                    Entradas Culturales (5 Integrantes)
+                </h2>
+                <span class="section-subtotal">Subtotal: 617,00 €</span>
+            </div>
+
+            <!-- Family Distribution Summary Grid -->
+            <div class="family-summary-grid">
+                <div class="family-box">
+                    <div class="family-name">Familia Esguerra (2 pers)</div>
+                    <div class="family-total">246,80 €</div>
+                    <div class="family-per-capita">123,40 € / persona</div>
+                </div>
+                <div class="family-box">
+                    <div class="family-name">Familia Rayran (2 pers)</div>
+                    <div class="family-total">246,80 €</div>
+                    <div class="family-per-capita">123,40 € / persona</div>
+                </div>
+                <div class="family-box">
+                    <div class="family-name">Tía Bibiana (1 pers)</div>
+                    <div class="family-total">123,40 €</div>
+                    <div class="family-per-capita">123,40 € / persona</div>
+                </div>
+            </div>
+
+            <div class="cards-grid">
+                <!-- San Marcos -->
+                <div class="cost-card">
+                    <div>
+                        <div class="card-top">
+                            <span class="category-tag tag-purple">Venecia</span>
+                            <span class="price-label">9,40 €/p</span>
+                        </div>
+                        <h3 class="card-title">Basílica San Marcos</h3>
+                        <div class="breakdown-list">
+                            <div class="breakdown-item"><span>Esguerra (2):</span> <strong>18,80 €</strong></div>
+                            <div class="breakdown-item"><span>Rayran (2):</span> <strong>18,80 €</strong></div>
+                            <div class="breakdown-item"><span>Tía Bibiana (1):</span> <strong>9,40 €</strong></div>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="price-label">Total Entrada</span>
+                        <span class="price-value">47,00 €</span>
+                    </div>
+                </div>
+
+                <!-- Coliseo -->
+                <div class="cost-card">
+                    <div>
+                        <div class="card-top">
+                            <span class="category-tag tag-purple">Roma</span>
+                            <span class="price-label">54,00 €/p</span>
+                        </div>
+                        <h3 class="card-title">Coliseo, Foro y Palatino</h3>
+                        <div class="breakdown-list">
+                            <div class="breakdown-item"><span>Esguerra (2):</span> <strong>108,00 €</strong></div>
+                            <div class="breakdown-item"><span>Rayran (2):</span> <strong>108,00 €</strong></div>
+                            <div class="breakdown-item"><span>Tía Bibiana (1):</span> <strong>54,00 €</strong></div>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="price-label">Total Entrada</span>
+                        <span class="price-value">270,00 €</span>
+                    </div>
+                </div>
+
+                <!-- Vaticano -->
+                <div class="cost-card">
+                    <div>
+                        <div class="card-top">
+                            <span class="category-tag tag-purple">Roma</span>
+                            <span class="price-label">60,00 €/p</span>
+                        </div>
+                        <h3 class="card-title">Museos Vaticanos + Bus</h3>
+                        <div class="breakdown-list">
+                            <div class="breakdown-item"><span>Esguerra (2):</span> <strong>120,00 €</strong></div>
+                            <div class="breakdown-item"><span>Rayran (2):</span> <strong>120,00 €</strong></div>
+                            <div class="breakdown-item"><span>Tía Bibiana (1):</span> <strong>60,00 €</strong></div>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="price-label">Total Tour</span>
+                        <span class="price-value">300,00 €</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Executive Hero Banner (Suma Total Consolidada) -->
+        <div class="hero-banner">
+            <div class="hero-header">
+                <div>
+                    <div class="hero-label">Suma Total Consolidada</div>
+                    <div class="hero-subtext">Alojamiento + Vuelos + Trenes + Entradas</div>
+                </div>
+                <div class="hero-amount">2.335,86 €</div>
+            </div>
+
+            <!-- Visual Allocation Bar -->
+            <div class="progress-container">
+                <div class="progress-bar-track">
+                    <div class="progress-segment segment-alojamiento" title="Alojamientos (41%)"></div>
+                    <div class="progress-segment segment-entradas" title="Entradas (26%)"></div>
+                    <div class="progress-segment segment-vuelos" title="Vuelos (18%)"></div>
+                    <div class="progress-segment segment-trenes" title="Trenes (15%)"></div>
+                </div>
+                <div class="progress-legend">
+                    <div class="legend-item"><span class="legend-dot" style="background:#6366f1;"></span> Alojamientos: 960,36 € (41%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background:#c084fc;"></span> Entradas: 617,00 € (26%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background:#34d399;"></span> Vuelos: 410,82 € (18%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background:#fbbf24;"></span> Trenes: 329,50 € (15%)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: ASISTENTE IA -->
+        <section class="ai-card">
+            <div class="ai-header">
+                <div class="ai-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <div>
+                    <h3 style="font-size: 16px; font-weight: 700; color: #0f172a;">Asistente de Viaje IA (Gemini)</h3>
+                    <p style="font-size: 12px; color: #64748b;">Pregunta sobre la división por familias o recomendaciones en Italia</p>
+                </div>
+            </div>
+
+            <!-- Quick Action Chips -->
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+                <button class="ai-chip" onclick="quickPrompt('¿Cómo se dividen los 617 € de entradas entre Esguerra, Rayran y Tía Bibiana?')">🎟️ Reparto Entradas</button>
+                <button class="ai-chip" onclick="quickPrompt('Calcula el total general que debe aportar la familia Esguerra en el viaje.')">📊 Total Esguerra</button>
+            </div>
+
+            <div class="ai-input-group">
+                <input type="text" id="aiPrompt" placeholder="Ej. ¿Cuánto le corresponde pagar a Tía Bibiana?" class="ai-prompt-input">
+                <button onclick="askGemini()" id="aiBtn" class="ai-submit-btn">Consultar IA</button>
+            </div>
+
+            <div id="aiResponseContainer" style="display: none;" class="ai-response">
+                <div style="display: flex; justify-between; align-items: center; margin-bottom: 6px;">
+                    <strong style="color: #3730a3;">Respuesta:</strong>
+                    <button onclick="speakResponse()" id="speakBtn" class="voice-btn">🔊 Escuchar</button>
+                </div>
+                <div id="aiResponseText"></div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Tab Filtering logic
+        function filterCategory(category, element) {
+            const tabs = document.querySelectorAll('.tab-chip');
+            tabs.forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+
+            const items = document.querySelectorAll('.category-item');
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-cat') === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function quickPrompt(text) {
+            document.getElementById('aiPrompt').value = text;
+            askGemini();
+        }
+
+        let lastSpokenText = "";
+
+        async function speakResponse() {
+            if (!lastSpokenText) return;
+            const speakBtn = document.getElementById('speakBtn');
+            speakBtn.disabled = true;
+            speakBtn.textContent = "Generando audio...";
+
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: "Resumen de viaje: " + lastSpokenText }] }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } }
+                },
+                model: "gemini-2.5-flash-preview-tts"
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                    const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                    const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 24000;
+                    
+                    const binaryString = atob(audioData);
+                    const bytes = new Uint8Array(binaryString.length);
+                    for (let i = 0; i < binaryString.length; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+
+                    const wavHeader = createWavHeader(bytes.length, sampleRate);
+                    const blob = new Blob([wavHeader, bytes], { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(blob);
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+                }
+            } catch (err) {
+                console.error("Error reproduciendo audio:", err);
+            } finally {
+                speakBtn.disabled = false;
+                speakBtn.textContent = "🔊 Escuchar";
+            }
+        }
+
+        function createWavHeader(dataLength, sampleRate) {
+            const buffer = new ArrayBuffer(44);
+            const view = new DataView(buffer);
+            view.setUint32(0, 0x52494646, false); // "RIFF"
+            view.setUint32(4, 36 + dataLength, true);
+            view.setUint32(8, 0x57415645, false); // "WAVE"
+            view.setUint32(12, 0x666d7420, false); // "fmt "
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true); // PCM
+            view.setUint16(22, 1, true); // Mono
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            view.setUint32(36, 0x64617461, false); // "data"
+            view.setUint32(40, dataLength, true);
+            return buffer;
+        }
+
+        async function askGemini() {
+            const promptInput = document.getElementById('aiPrompt');
+            const responseContainer = document.getElementById('aiResponseContainer');
+            const responseText = document.getElementById('aiResponseText');
+            const btn = document.getElementById('aiBtn');
+
+            const query = promptInput.value.trim();
+            if (!query) return;
+
+            btn.disabled = true;
+            btn.textContent = "Procesando...";
+            responseContainer.style.display = "block";
+            responseText.innerHTML = "Consultando datos de presupuesto...";
+
+            const systemPrompt = "Eres un asistente de viajes. El gasto total consolidado es 2.335,86 € (Alojamiento 960,36 €, Vuelos 410,82 €, Trenes 329,50 €, Entradas 617,00 €). Entradas culturales: 5 personas (123,40 € por persona) -> Esguerra (2p = 246,80 €), Rayran (2p = 246,80 €), Tía Bibiana (1p = 123,40 €). Responde con brevedad y amabilidad.";
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: query }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    })
+                });
+
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (text) {
+                    lastSpokenText = text;
+                    responseText.innerHTML = text.replace(/\n/g, '<br>');
+                } else {
+                    responseText.innerHTML = "No se pudo obtener respuesta en este momento.";
+                }
+            } catch (err) {
+                responseText.innerHTML = "Ocurrió un error al conectar con Gemini.";
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Consultar IA";
+            }
+        }
+    </script>
+</body>
+</html>
